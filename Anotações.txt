@@ -1,0 +1,13 @@
+1- Inicia o projeto com npm init, cria o packager.json
+2- como vamos usar o typescript precisamos instalar o typescript (npm install typescript)
+3- instala o @types/node  que é a integração do typescript com o node (npm install @types/node)
+4- para iniciar o typescript usar o comando "npx tsc --init", cria o tsconfig.js
+5 - para configurar meu typescript procurar por " Node Target Mapping github" no google,  
+    vai mostrar um link da microsoft que mostra como deve ser minha configuração para cada versao do node .
+    (https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping);
+6 - instalar o tsx para que o nossa aplicação ja pegue automaticamente nossas alterações.(npm install tsx)
+ obs: se nao quiser instalar esse biblioteca, 
+ preciso ficar rodando sempre  " npx tsc" para transformar meu codigo ts em js e depois "node dist/server.js"
+
+7- criei um script no packager.json para iniciar o projeto devo rodar "npm run dev"
+    ( "dev": "tsx watch src/server.ts")
