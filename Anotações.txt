@@ -11,3 +11,30 @@
 
 7- criei um script no packager.json para iniciar o projeto devo rodar "npm run dev"
     ( "dev": "tsx watch src/server.ts")
+
+
+para user o typeOrm:
+https://www.youtube.com/watch?v=9AO2hZJsHrs&t=2708s
+https://typeorm.io/  procurar por Installation
+1- npm install typeorm --save
+2 - para poder usar os decorators que o typeorm precisa: npm install reflect-metadata --save
+3 - npm install @types/node --save-dev
+4- como vou usar o Postgres tenho que instalar o postgres: npm install pg --save
+5 - informar no dataSource as configurações no banco, 
+    nesse caso eu criei um container para utilizar o postgress e coloquei todas as informações 
+    de criação do container no dataSource
+
+para gerar uma migration pro typeOrm precisamos 
+ter o script no packger.json "typeorm": "ts-node ./node_modules/typeorm/cli.js"
+e rodar o coamndo no terminal: npm run  typeorm migration:create -nome CreateUser
+npm run  typeorm migration:run   -- -d src/typeorm/dataSource.ts  
+npm run  typeorm migration:revert   -- -d src/database/dataSource.ts  
+
+
+docker run -d --name db_typeorm_mentoria -p 5432:5432 -e POSTGRES_PASSWORD=123457 -e POSTGRES_USER=typeorm_projeto_mentoria -e POSTGRES_DB=db_typeorm_mentoria postgres
+
+docker run -d --name db_typeorm_mentoria -p 5432:5432 -e POSTGRES_PASSWORD= -e POSTGRES_USER=  postgres
+
+
+npx tsc
+node dist/server.js
