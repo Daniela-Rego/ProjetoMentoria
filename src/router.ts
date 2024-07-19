@@ -10,7 +10,7 @@ const routes = Router()
  routes.post('/createUser',(req, res) => {
     console.log("req",req.body)
 
-   UserController.criateUser
+   // UserController.criateUser
 
     
 });  

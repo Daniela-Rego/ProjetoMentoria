@@ -1,11 +1,9 @@
-import IUser from "../interfaces/userInterface";
-import { Response } from "express";
+import { Request, Response } from "express";
 export class UserController {
 
-    createUser(request:any, res:any ){
+    createUser(request:Request, res:Response ){
 
-
-      return  res.status(201).json("User Created")
+      return  res.status(201).json("User Created test")
     }
 
 }

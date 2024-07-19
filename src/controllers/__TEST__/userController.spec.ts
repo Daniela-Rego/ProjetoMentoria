@@ -1,25 +1,31 @@
-import IUser from "../../interfaces/userInterface"
+
 import { UserController } from "../UserController"
 import { Response,Request } from "express";
 
 describe('Should be test class UserController',() =>{
     it('Should be test creteUser method',async () => {
-       const resquest = {
+        let responseObject: any;
+        let mockRequest: Partial<Request>;
+        let mockResponse: Partial<Response>;
+        mockRequest = {
             body:{
                 name: "Daniela",
                 dateOfBirth: new Date('10/03/1994'),
                 cpf: "103.673.875-08",
                 email: "daniela.lima@gmail.com"
             }
-       }as Request;
+        };
 
-       const response ={
-           status: 201,
-           message: "User Created test"
-       } as unknown as Response
+        mockResponse ={
+           status: jest.fn().mockReturnThis(),
+           json:  jest.fn().mockImplementation((result) => {
+            responseObject = result;
+          }),
+        };
 
         const controllerUser = new UserController()
-        controllerUser.createUser(resquest,response)
-        expect(response).toBe(response.status(200))
+        controllerUser.createUser(mockRequest as Request,mockResponse as Response)
+        expect(mockResponse.status).toHaveBeenCalledWith(201)
+        expect(mockResponse.json).toHaveBeenCalledWith("User Created test")
     })
 })
