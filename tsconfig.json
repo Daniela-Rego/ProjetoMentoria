@@ -107,5 +107,5 @@
   },
   "include":[
     "src/**/*",
-    "src/typeorm/migration/1720747778472-CreateUser.ts" ]
+    "src/typeorm/migration/1720747778477-CreateUser.ts", "src/typeorm/entity/.ts" ]
 }

@@ -38,3 +38,11 @@ docker run -d --name db_typeorm_mentoria -p 5432:5432 -e POSTGRES_PASSWORD= -e P
 
 npx tsc
 node dist/server.js
+
+
+regras de negocio:
+usuario deve esta logado para fazer um post
+o post so deve ser publicado se for dia de semana 
+
+//var mockPostIsvalid = jest.spyOn(postService,'createPosts').mockReturnValue();
+        // postService.postIsvalid = jest.fn().mockReturnValue(true);
