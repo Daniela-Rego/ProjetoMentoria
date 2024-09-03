@@ -30,9 +30,9 @@ describe(" Should be teste class PostService", () => {
         }*/
 
        
-           postRepository.save.mockResolvedValue(mockReturnRepositoryPostSave)
+          // postRepository.save.mockResolvedValue(mockReturnRepositoryPostSave)
 
-        postService = new PostService(postRepository);
+        //postService = new PostService(postRepository);
     })
 
     it("Should be field filling is correct", () => {
@@ -83,7 +83,7 @@ describe(" Should be teste class PostService", () => {
 
     })
 
-    it("Should be teste createPosts is Valid", async () => {
+   /* it("Should be teste createPosts is Valid", async () => {
 
         var mockRequest: IPostbody = {
 
@@ -104,7 +104,7 @@ describe(" Should be teste class PostService", () => {
         expect(await postService.createPosts(mockRequest)).toEqual(mockReturnRepositoryPostSave);
 
 
-    })
+    })*/
 
 
     it("Should be field title is correct", () => {

@@ -49,9 +49,19 @@ export class PostService{
         if(body.description.length >50){
             throw new Error("Campo description nao pode ter mais de 50")
         }
-            
+    
 
         return  true
+    }
+
+    async verifyIfWeekeend(date: Date): Promise<Boolean> {
+        const dayOfWeek = date.getDay();
+        console.log('dentro verifyIfWeekeend',dayOfWeek)
+        if (dayOfWeek == 0 || dayOfWeek == 6) {
+            console.log('final de semana');
+            //return true;
+        }
+        return false;
     }
 
 

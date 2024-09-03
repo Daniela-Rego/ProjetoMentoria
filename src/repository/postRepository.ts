@@ -8,7 +8,8 @@ export class PostRepository {
     async save(post: PostEntity): Promise<PostEntity>{
         console.log("entrei save post")
       
-        const savePost = await this.repoPost.save(post);
+        const savePost = await this.repoPost.
+        save(post);
        
         console.log("savePost:::",savePost)
        

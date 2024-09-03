@@ -46,3 +46,13 @@ o post so deve ser publicado se for dia de semana
 
 //var mockPostIsvalid = jest.spyOn(postService,'createPosts').mockReturnValue();
         // postService.postIsvalid = jest.fn().mockReturnValue(true);
+
+
+
+        * "components":{
+ *    "bearerAuth"{
+ *       "type": "http",
+ *       "schema":"bearer",
+ *       "bearerFormat":"JWT"
+ *    }
+ * }
