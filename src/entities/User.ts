@@ -23,9 +23,6 @@ export class User implements IUserbody {
         return this.params.id;
     }
 
-    set id(value){
-        this.params.id = value
-    }
     get name() {
         return this.params.name;
     }

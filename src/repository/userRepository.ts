@@ -11,10 +11,15 @@ export class UserRepository{
         console.log('resultTypeOrm',resultTypeOrm)
     }
 
-   async findEmail (email:string): Promise<string> {
+   async findEmail (email:string): Promise<User | null> {
      const findEmail = await this.repo.findOneBy({ email: email });
         console.log("findEmail: ",findEmail)
-     return "string"
+     return findEmail;
    }
+   async findId (_id:string): Promise<User | null> {
+    const findID = await this.repo.findOneBy({ id: _id });
+       console.log("findID: ",findID)
+    return findID;
+  }
 
 }
