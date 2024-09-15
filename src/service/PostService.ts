@@ -1,27 +1,35 @@
 import { title } from "process";
 import IPostbody from "../interfaces/PostBodyInterface";
-
-
-import  PostEntity  from "../entities/PostEntity"
+import PostEntity from "../entities/PostEntity"
 import { PostRepository } from "../repository/postRepository";
+import { WeekeendService } from "./weekeendService"
+import mqConnection from "./rabbitmqServices"
+import { AnyARecord } from "dns";
 
-export class PostService{
-    
-    constructor( private repositoryPost : PostRepository ){}
+export class PostService {
 
-    async createPosts(body: IPostbody): Promise<PostEntity>{
-        console.log("antes da validacao")
-        this.postIsvalid(body)  
-       
-       
-         const post = new PostEntity(body)
-         console.log("cretatePost:",post)
-         
-        const savePost =  await  this.repositoryPost.save(post);
-            
-            return savePost;
+    constructor(private repositoryPost: PostRepository, private weekeendService: WeekeendService) { }
+
+    async createPosts(body: IPostbody): Promise<PostEntity | undefined | Error> {
+        try{
+            console.log("antes da validacao")
+        const postValid = await this.postIsvalid(body)
+
+        console.log("ANTES DA CLASSE POST NA POST SERVICES")
+        //const post = new PostEntity(body)
+        // console.log("cretatePost:",post)
+
+        //const savePost =  await  this.repositoryPost.save(post);
+
+        //return savePost;
+        return;
+        }catch(error: any){
+            console.log("entrei catch do CreatePost",error.message);
+            throw new Error(error.message)
+        }
+        
         //validar se o user logado existe no banco 
-         //validar quem é o usuario logado(token)
+        //validar quem é o usuario logado(token)
         //Post so deve ser executado em dia de semana
         //Post tem tamanho maximo de caracter(10caracter)
         //Um post será rejeitado caso contenha palavras ofensivas. (iniciamos com palavrão)
@@ -29,39 +37,58 @@ export class PostService{
 
     }
 
-     postIsvalid(body: IPostbody): Boolean| Error{
+    async postIsvalid(body: IPostbody): Promise<Boolean | Error> {
         //validar se foi indicado ao menos um sentimento no post, entender como deve ficar quando tiver mais de um sentimento
         ////validar se foi indicado ao menos um sentimento no post
-       console.log("entrei em validao post")
-        if(!body.id_feeling){
-            throw new Error("Por favor indique ao menos um sentimento")
-        }
-         //validar se o title não esta vazio
-        if(!body.title){
-            throw new Error("Campo Titulo é Obrigatorio")
-        }
-        //validar se o description não esta vazio
-        if(!body.description){
-            throw new Error("Campo  descrição é Obrigatorio")
-        }
+        console.log("entrei em validao post")
+       // try {
+            if (!body.id_feeling) {
+                throw new Error("Por favor indique ao menos um sentimento")
+            }
+            //validar se o title não esta vazio
+            if (!body.title) {
+                throw new Error("Campo Titulo é Obrigatorio")
+            }
+            //validar se o description não esta vazio
+            if (!body.description) {
+                throw new Error("Campo  descrição é Obrigatorio")
+            }
 
-        //Post tem tamanho maximo de caracter(50caracters)
-        if(body.description.length >50){
-            throw new Error("Campo description nao pode ter mais de 50")
-        }
-    
+            //Post tem tamanho maximo de caracter(50caracters)
+            if (body.description.length > 50) {
+                throw new Error("Campo description nao pode ter mais de 50")
+            }
 
-        return  true
+            var dateVerify: Date = body.created_at ? body.created_at : new Date();
+
+            if (await this.IsWeekeend(dateVerify)) {
+                console.log('If IsWeekeend');
+                //enviar pra fila para ser processado no proximo dia util, chamar um rabbitmqServices?
+
+
+                await mqConnection.publishInExchange('amq.direct', 'weekend', body)
+                await this.weekeendService.execute();
+                console.log("VOLTEI POSTSERVICE");
+                return true
+            }
+
+            return true
+       /* } catch (error: any) {
+            console.log("entrei catch postValidate: ", error.message);
+            throw new Error(error.message);
+        }*/
+
     }
 
-    async verifyIfWeekeend(date: Date): Promise<Boolean> {
+    async IsWeekeend(date: Date): Promise<Boolean> {
         const dayOfWeek = date.getDay();
-        console.log('dentro verifyIfWeekeend',dayOfWeek)
+        console.log('dentro verifyIfWeekeend', dayOfWeek)
         if (dayOfWeek == 0 || dayOfWeek == 6) {
             console.log('final de semana');
-            //return true;
+            return true;
         }
-        return false;
+        console.log('Dia de semana');
+        return true;
     }
 
 

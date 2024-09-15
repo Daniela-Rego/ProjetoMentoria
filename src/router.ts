@@ -112,6 +112,12 @@ routes.get('/Posts', (req, res) => {
    console.log("req", req.body)
 });
 
+ /*cron.schedule('*30 * * * * *', async () => {
+                console.log("entrei na cron")
+
+//chama rota atualiza status post
+        });*/
+
 
 
 

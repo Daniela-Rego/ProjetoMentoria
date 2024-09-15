@@ -6,10 +6,20 @@ export class PostRepository {
     private repoPost = AppDataSource.getRepository(Post)
 
     async save(post: PostEntity): Promise<PostEntity>{
-        console.log("entrei save post")
+        console.log("entrei save post in repository")
       
-        const savePost = await this.repoPost.
-        save(post);
+        const savePost = await this.repoPost.save(post);
+       
+        console.log("savePost:::",savePost)
+       
+        return savePost;
+
+    }
+
+    async saveWeekend(post: PostEntity): Promise<PostEntity>{
+        console.log("entrei saveWeekend post in repository")
+      
+        const savePost = await this.repoPost.save(post);
        
         console.log("savePost:::",savePost)
        
