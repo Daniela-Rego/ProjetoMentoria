@@ -18,7 +18,7 @@ export  class PostController {
             
         catch(error: any ){
             console.log("entrei controller catch",error.message)
-             response.status(500).json({message: error.message})
+             response.status(400).json({message: error.message})
         }
         
         

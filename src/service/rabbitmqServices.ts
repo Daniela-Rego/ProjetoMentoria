@@ -21,7 +21,7 @@ class RabbitmqServices {
 
     }
 
-    async sendMessage(queue: string, message: any) {
+   /* async sendMessage(queue: string, message: any) {
         console.log("entrei no sendMessage")
         try {
             const teste = await this.channel.sendToQueue(queue, Buffer.from(message))
@@ -30,7 +30,7 @@ class RabbitmqServices {
             console.log("entrei no catch sendMessage: ", error)
         }
 
-    }
+    }*/
 
     async publishInExchange(exchange: string, routngkey: string, message: IPostbody): Promise<Boolean> {
 

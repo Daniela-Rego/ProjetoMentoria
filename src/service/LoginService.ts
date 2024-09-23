@@ -15,7 +15,7 @@ export class LoginService{
       
       
         if(!user){
-            throw new Error ("email ou senha invalidos")
+            throw new Error ("email não encontrado")
         }
         
         const verifyPass = await bcrypt.compare(password, user.password)

@@ -10,9 +10,7 @@ export class UserService {
             var {name,  birth_date, cpf, email, password } = body
 
            var newPass= await this.criptyPass(password)
-
-            body.password = newPass.toString();
-            console.log("hash:",body.password)
+            body.password = newPass;
             var user = new User(body)
 
            console.log("criou user: ",user)

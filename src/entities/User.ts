@@ -8,7 +8,7 @@ export class User implements IUserbody {
     constructor(dataUser: IUserbody) {
 
         this.params = dataUser;
-       
+       this.validateDate(this.params)
 
         if (dataUser.id === undefined || dataUser.id === null) {
             this.params.id = uuidv4();
@@ -60,11 +60,11 @@ export class User implements IUserbody {
     }
 
     validateDateOfBirth(dateOfBirth: Date) {
-        const year = dateOfBirth.getFullYear();
-        const yearNow = new Date();
-        const someYear = yearNow.getFullYear();
-        const is18 = year - someYear;
-
+        let date = new Date(dateOfBirth);
+        const year = date.getFullYear();
+        const yearNow = new Date().getFullYear();
+        const is18 = yearNow - year ;
+        console.log("is18",is18)
         if (is18 < 18) {
             throw new Error('Usuario precisa ser maior de 18 Anos');
         }

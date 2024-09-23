@@ -13,13 +13,12 @@ export class WeekeendService {
         
 
             await mqConnection.consumer(process.env.QUEUE_WEEKEND!, async (message) => {
-                console.log("2:::", message.content.toString());
-                console.log("typeOf::", typeof (message.content.toString()))
+                console.log("conteudo da mensagem:::", message.content.toString());
                 const content: IPostbody = JSON.parse(message.content.toString());
                 content.status = "POST_WAIT"
                 console.log("content::::", content);
                 const post = new PostEntity(content);
-                await this.repositoryPost.save(post);
+                await this.repositoryPost.saveWeekend(post);
 
             })
 
