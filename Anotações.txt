@@ -56,3 +56,20 @@ o post so deve ser publicado se for dia de semana
  *       "bearerFormat":"JWT"
  *    }
  * }
+
+
+client.connect('ampq://fila_user:123456@localhost:5672')
+
+const getPaginatedData = async (page, limit) => {
+  const offset = (page - 1) * limit; // Calcula o OFFSET com base na página e no limite
+  const query = `
+    SELECT *
+    FROM usuarios
+    ORDER BY id
+    LIMIT $1 OFFSET $2;
+  `;
+
+  // Query com parâmetros limit e offset
+  const result = await pool.query(query, [limit, offset]);
+  return result.rows;
+  

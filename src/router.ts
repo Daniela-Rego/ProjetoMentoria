@@ -1,13 +1,10 @@
 import { Router } from 'express'
-import { UserRepository } from './repository/userRepository';
 import { PostController } from './controllers/PostController';
 import { UserController } from './controllers/UserController';
 import { LoginController } from './controllers/LoginController';
 import { autentication } from './middleware/tokenMiddleware';
 
 
-
-//import swaggerDocker from ""
 const routes = Router()
 
 console.log("entrei rotas ");
@@ -49,7 +46,7 @@ console.log("entrei rotas ");
  *     responses:
  *       201:
  *         description: User created successfully.
- *       400:
+ *       500:
  *         description: Bad request.
  */
 routes.post('/createUser', (req, res) => {
@@ -111,6 +108,12 @@ routes.post('/createPost', autentication, (req, res) => {
 routes.get('/Posts', (req, res) => {
    console.log("req", req.body)
 });
+
+ /*cron.schedule('*30 * * * * *', async () => {
+                console.log("entrei na cron")
+
+//chama rota atualiza status post
+        });*/
 
 
 
