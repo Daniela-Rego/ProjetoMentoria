@@ -22,9 +22,9 @@ export class PostService {
 
                 const savePost = await this.repositoryPost.save(post);
 
-                return savePost;
+                return;
             }
-
+            return;
 
         } catch (error: any) {
             console.log("entrei catch do CreatePost", error.message);
