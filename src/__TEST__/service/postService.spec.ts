@@ -2,10 +2,12 @@ import PostEntity from "../../entities/PostEntity";
 import IPostbody from "../../interfaces/PostBodyInterface";
 import { PostRepository } from "../../repository/postRepository";
 import { PostService } from "../../service/PostService";
+import { WeekeendService } from "../../service/weekeendService"
 
 describe(" Should be teste class PostService", () => {
     let postService: PostService;
-    //let postRepository: PostRepository;
+    let postRepository: PostRepository;
+   let  weekeendService: WeekeendService;
    
     beforeEach(() => {
         var mockReturnRepositoryPostSave = {
@@ -24,9 +26,22 @@ describe(" Should be teste class PostService", () => {
 
         }
 
-     /* var postRepository = {
+       /*postRepository = {
+            repoPost:{},
             save: jest.fn(),
-           repoPost: {}
+            saveWeekend: jest.fn()
+        }
+
+           weekeendService = {
+            execute: jest.fn(),
+            
+           
+        }
+
+           postService = {
+            postIsvalid: jest.fn(),
+            IsWeekeend:jest.fn()
+           
         }*/
 
        
@@ -83,7 +98,7 @@ describe(" Should be teste class PostService", () => {
 
     })
 
-   /* it("Should be teste createPosts is Valid", async () => {
+    it("Should be teste createPosts is Valid", async () => {
 
         var mockRequest: IPostbody = {
 
@@ -93,18 +108,31 @@ describe(" Should be teste class PostService", () => {
             id_feeling: "f8a0bf33-7941-412a-8532-615590e6c3b2",
         }
 
-        
-
-        
+        var mockReturnRepositoryPostSave = {
+                    title: 'Como estou me sentindo?',
+                    description: 'Hoje foi um dia extraordinário',
+                    id_user: '7fcdaa18-c552-4ef4-a316-c48abb2d14cb',
+                    id_feeling: 'f8a0bf33-7941-412a-8532-615590e6c3b2',
+                    id: '458cc349-5db3-431f-af8b-bf421729c40b',
+                    created_at: new Date('2024-08-10'),
+                    status: 'POSTED'
+        } as PostEntity
        
+       // jest.spyOn(postService as any,'postIsvalid').mockResolvedValue(true);
 
-       
+       //let mockPostService = jest.spyOn(postService,'postIsvalid')
+      
 
 
-        expect(await postService.createPosts(mockRequest)).toEqual(mockReturnRepositoryPostSave);
+        jest.spyOn(postRepository,'save').mockResolvedValue(mockReturnRepositoryPostSave);
+
+       const result = await postService.createPosts(mockRequest)
 
 
-    })*/
+        
+        expect(result).toEqual(true);
+        expect(result).toHaveBeenCalledWith(mockRequest)
+    })
 
 
     it("Should be field title is correct", () => {
