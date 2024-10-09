@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
-    "dev": "tsx watch src/server.ts"
+    "typeorm": "npx ts-node ./node_modules/typeorm/cli.js",
+    "dev": "tsx watch src/server.ts",
+    "start": "npx tsc && node dist/server.js"
   },
   "author": "",
   "license": "ISC",

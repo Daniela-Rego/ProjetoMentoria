@@ -10,6 +10,10 @@ describe(" Should be teste class PostService", () => {
    let  weekeendService: WeekeendService;
    
     beforeEach(() => {
+        postRepository = new PostRepository(); 
+        weekeendService = new WeekeendService(postRepository); 
+        postService = new PostService(postRepository, weekeendService);
+            
         var mockReturnRepositoryPostSave = {
             PostEntity:
             {
@@ -25,6 +29,8 @@ describe(" Should be teste class PostService", () => {
             }
 
         }
+
+
 
        /*postRepository = {
             repoPost:{},
@@ -126,12 +132,19 @@ describe(" Should be teste class PostService", () => {
 
         jest.spyOn(postRepository,'save').mockResolvedValue(mockReturnRepositoryPostSave);
 
-       const result = await postService.createPosts(mockRequest)
+        jest.spyOn(postService, 'postIsvalid').mockResolvedValue(true);
 
+       const result = await postService.createPosts(mockRequest)
+        console.log("result",result);
 
         
-        expect(result).toEqual(true);
-        expect(result).toHaveBeenCalledWith(mockRequest)
+       
+        expect(result).toEqual(mockReturnRepositoryPostSave);
+        expect(postService.postIsvalid).toHaveBeenCalledWith(mockRequest);
+        // Verifica se postIsvalid foi chamado corretamente
+    
+    // Aqui você verifica se o repositório 'save' foi chamado com a entidade correta
+    expect(postRepository.save).toHaveBeenCalledWith(expect.any(PostEntity)); 
     })
 
 

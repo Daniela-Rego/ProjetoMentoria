@@ -12,7 +12,7 @@ AppDataSource.initialize()
     const app = express();
     await  mqConnection.connect();
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-    const port = process.env.PORT || 3001
+    const port = process.env.PORT || 3000
     app.use(express.json());
     app.use(routes)
     app.listen(port);

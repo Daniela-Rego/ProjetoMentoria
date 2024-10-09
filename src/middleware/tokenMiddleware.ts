@@ -6,6 +6,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 
 
 
+
 export const autentication = async (req: Request, res: Response, next: NextFunction) => {
     try {
 

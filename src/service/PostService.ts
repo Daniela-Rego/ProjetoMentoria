@@ -22,7 +22,7 @@ export class PostService {
 
                 const savePost = await this.repositoryPost.save(post);
 
-                return;
+                return savePost;
             }
             return;
 
@@ -61,7 +61,7 @@ export class PostService {
 
         var dateVerify: Date = body.created_at ? body.created_at : new Date();
 
-        const IsWeekeends = await this.IsWeekeend(dateVerify)
+        const IsWeekeends: Boolean = await this.IsWeekeend(dateVerify)
         if (IsWeekeends) {
             console.log('If IsWeekeenddddd');
            

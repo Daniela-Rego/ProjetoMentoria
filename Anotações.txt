@@ -26,7 +26,7 @@ https://typeorm.io/  procurar por Installation
 
 para gerar uma migration pro typeOrm precisamos 
 ter o script no packger.json "typeorm": "ts-node ./node_modules/typeorm/cli.js"
-e rodar o coamndo no terminal: npm run  typeorm migration:create -nome CreateUser
+e rodar o coamndo no terminal: npm run  typeorm migration:create -name CreateUser
 npm run  typeorm migration:run   -- -d src/typeorm/dataSource.ts  
 npm run  typeorm migration:revert   -- -d src/database/dataSource.ts  
 
@@ -73,3 +73,31 @@ const getPaginatedData = async (page, limit) => {
   const result = await pool.query(query, [limit, offset]);
   return result.rows;
   
+
+
+  tinhamos dois erros, as classe nao estavam instanciadas 
+  e não pode ser  expect(result).tobeEqual(true) 
+  pq quando o return é vazio ele fica como undefine no teste, 
+  por isso coloquei para retornar o save post. 
+
+
+Incluir Docker no projeto:
+ 1- Criar DockerFile(não obrigatório)
+ 2-  rodar o docker: docker-compose up --build
+ 
+
+
+ docker-compose down --volumes
+docker-compose volumes --down
+
+
+Matriz Quadrada: Número de linhas = Número de colunas (por exemplo, 3x3, 4x4).
+Matriz Retangular: O número de linhas é diferente do número de colunas (por exemplo, 4x3 ou 3x4)
+
+
+
+ primaryDiagonalSum += matrix[i][i];
+secondaryDiagonalSum += matrix[i][n - 1 - i];
+
+ console.log(" ".repeat(n - i) + "#".repeat(i));
+}
