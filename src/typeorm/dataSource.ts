@@ -2,7 +2,7 @@ import "reflect-metadata"
 import "dotenv/config";
 import { DataSource } from "typeorm"
 import { User } from "./entity/User"
-import { Post } from "./entity/Post"
+import  {Post } from "./entity/Post"
 import { Feeling } from "./entity/Feeling"
 
 const AppDataSource = new DataSource({

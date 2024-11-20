@@ -1,7 +1,7 @@
 import InterfaceLogin from "../interfaces/LoginBodyInterface";
 import { UserRepository } from "../repository/userRepository"
 import jwt from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import "dotenv/config";
 export class LoginService{
     constructor (private userRepository: UserRepository){}

@@ -6,9 +6,9 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: typeorm_mapasentimento_user
-      POSTGRES_PASSWORD: 123459
-      POSTGRES_DB: postgres_mapasentimento
+      POSTGRES_USER: typeorm_user_compose
+      POSTGRES_PASSWORD: 123457
+      POSTGRES_DB: postgres_compose_db
     ports:
      - "5432:5432" 
     volumes: 
@@ -16,6 +16,9 @@ services:
     networks:
       - rabbitmq_go_net  
   app:
+    depends_on: 
+      - db
+      - rabbitmq
     build:
       context: .
       dockerfile: Dockerfile
@@ -23,37 +26,33 @@ services:
     container_name: api_node
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - "3000:3000"
-    depends_on:
-      - db 
-      - rabbitmq 
     environment:
       TYPEORM_HOST: db
       TYPEORM_PORT: 5432
-      TYPEORM_USERNAME: typeorm_mapasentimento_user
-      TYPEORM_PASSWORD: 123459
-      TYPEORM_NAME: postgres_mapasentimento
+      TYPEORM_USERNAME: typeorm_user_compose
+      TYPEORM_PASSWORD: 123457
+      TYPEORM_NAME: postgres_compose_db
     working_dir: /usr/src/app  
-    command: sh -c "npm run typeorm migration:run -- -d src/typeorm/dataSource.ts && npm run start"
+    ##run: npx tsc
+    command: sh -c "npm run typeorm migration:run -- -d src/typeorm/dataSource.ts && npx tsc && node dist/server.js"
+    tty: true
     networks:
-      - rabbitmq_go_net  
-
+      - rabbitmq_go_net
+     
+      
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
     container_name: 'rabbitmq'
     restart: always
-    ports:
-      - 5672:5672
-      - 15672:15672
     environment:
       - "RABBITMQ_DEFAULT_PASS=123456"
       - "RABBITMQ_DEFAULT_USER=fila_user"
-    healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
-      interval: 10s
-      timeout: 5s
-      retries: 5  
+    ports:
+      - 15672:15672
+      - 5672:5672
     networks:
       - rabbitmq_go_net
 
@@ -61,5 +60,5 @@ networks:
   rabbitmq_go_net:
     driver: bridge
 volumes:
-  db:
-  rabbitmq:    
+  app:
+  db:     

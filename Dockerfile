@@ -2,21 +2,16 @@ FROM node:20.5.0
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY package.json /usr/src/app
 
-# Instala o TypeScript e o ts-node globalmente, além das dependências do projeto
 RUN npm install
-
-RUN npm install -g typescript
-
-RUN npm install -g ts-node@10.9.2
-
+RUN npm install bcrypt
 
 COPY . .
 
-# Compila os arquivos TypeScript para JavaScript
-RUN npx tsc
+##RUN npm run dev
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+RUN npx tsc
+CMD ["node", "dist/server.js"]

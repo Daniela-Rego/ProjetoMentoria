@@ -10,10 +10,10 @@ export default class PostEntity implements IPostbody {
     constructor(params: IPostbody) {
 
         this.paramsPost = params;
-        console.log("entrei na classe Post ")
+        console.log("entrei na classe Post ",params.id)
         if (params.id === undefined || params.id === null) {
             this.paramsPost.id = meuId();
-            console.log(this.paramsPost.id)
+            console.log("criou um novo id::",this.paramsPost.id)
         }
         if (params.created_at === undefined || params.created_at === null) {
             this.paramsPost.created_at = new Date();

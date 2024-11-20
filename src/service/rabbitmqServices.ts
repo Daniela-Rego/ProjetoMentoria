@@ -2,7 +2,7 @@ import { Connection, Channel, ConsumeMessage, connect, Message } from "amqplib";
 import PostEntity from "../entities/PostEntity";
 import IPostbody from "../interfaces/PostBodyInterface";
 import { METHODS } from "http";
-const RETRY_DELAY = 10000; // 5 segundos
+const RETRY_DELAY = 10000; // 10 segundos
 
 class RabbitmqServices {
     private connection!: Connection;

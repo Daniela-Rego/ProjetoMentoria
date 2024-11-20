@@ -3,13 +3,12 @@ import { PostController } from './controllers/PostController';
 import { UserController } from './controllers/UserController';
 import { LoginController } from './controllers/LoginController';
 import { autentication } from './middleware/tokenMiddleware';
-
+import cron from "node-cron";
 
 const routes = Router()
 
 console.log("entrei rotas ");
-
-
+const postController = new PostController();
 /**
  * @swagger
  * /createUser:
@@ -49,13 +48,45 @@ console.log("entrei rotas ");
  *       500:
  *         description: Bad request.
  */
-routes.post('/createUser', (req, res) => {
-   console.log("req", req.body)
+routes.post('/createUser', (req:any , res: any) => {
+   console.log("req router", req.body)
    var userController = new UserController()
    userController.createUser(req, res)
 
 
 });
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Login in the system
+ *     description: This endpoint allows you to Login in the system .
+ *     tags: [Users] 
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The user's name
+ *               password:
+ *                 type: string
+ *                 description: The user's cpf
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Login Realizado successfully.
+ *       400:
+ *         description: Bad request.
+ *       401:
+ *         description: user unauthorized.
+ * 
+ */
 
 routes.post('/login', new LoginController().login)
 
@@ -99,21 +130,23 @@ routes.post('/login', new LoginController().login)
  * 
  */
 
-routes.post('/createPost', autentication, (req, res) => {
-   const postController = new PostController()
-   postController.createPost(req, res)
-});
+
+
+routes.post('/createPost', autentication, postController.createPost)
+
 
 //Deve aparecer todos os post com seus status.
 routes.get('/Posts', (req, res) => {
    console.log("req", req.body)
 });
 
- /*cron.schedule('*30 * * * * *', async () => {
-                console.log("entrei na cron")
+cron.schedule('*/30 * * * * *', async () => {
+   console.log("entrei na cron");
+   postController.updateStatus();
+   
 
-//chama rota atualiza status post
-        });*/
+});
+
 
 
 
