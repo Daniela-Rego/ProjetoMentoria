@@ -1,14 +1,14 @@
 import IUserbody from '../interfaces/userInterface'
 import { v4 as uuidv4 } from 'uuid';
-import bcrypt from 'bcrypt'
+
 
 export class User implements IUserbody {
     private params: IUserbody
 
-    constructor(dataUser: IUserbody) {
-
+    constructor (dataUser: IUserbody) {
+        console.log("entrei class user")
         this.params = dataUser;
-       this.validateDate(this.params)
+       
 
         if (dataUser.id === undefined || dataUser.id === null) {
             this.params.id = uuidv4();
@@ -16,6 +16,10 @@ export class User implements IUserbody {
         if (dataUser.type == null || dataUser.type == undefined) {
             this.params.type = "FREE"
         }
+        if (typeof dataUser.birth_date === 'string') {
+            this.params.birth_date = this.formatDate(dataUser.birth_date);
+        }
+        this.validateDate(this.params)
 
     }
 
@@ -30,12 +34,10 @@ export class User implements IUserbody {
         return this.params.type;
     }
 
-    /*get dateOfBirth() {
-        return this.params.dateOfBirth
-    }*/
    get birth_date() {
         return this.params.birth_date
     }
+   
     get cpf() {
         return this.params.cpf
     }
@@ -54,21 +56,40 @@ export class User implements IUserbody {
         this.params.type = value;
     }
 
-    validateDate(dataUser: IUserbody) {
-        this.validateDateOfBirth(dataUser.birth_date)
-        this.validateEmail(dataUser.email)
+    async validateDate(dataUser: IUserbody) {
+        console.log("entrei validate: ",typeof(dataUser.birth_date))
+       let formatBirth_date = await this.validateDateOfBirth(dataUser.birth_date)
+        await this.validateEmail(dataUser.email)
+        return
     }
 
     validateDateOfBirth(dateOfBirth: Date) {
-        let date = new Date(dateOfBirth);
-        const year = date.getFullYear();
+        //let date = this.formatDate(dateOfBirth)
+        console.log("entrei validateDateOfBirth",dateOfBirth)
+        const year = dateOfBirth.getFullYear();
+        console.log(" validateDateOfBirth 1")
         const yearNow = new Date().getFullYear();
+        console.log(" validateDateOfBirth 2")
         const is18 = yearNow - year ;
+        console.log("dateOfBirth: ",dateOfBirth);
+        //console.log("date: ",date);
+        console.log("year: ",year)
+        console.log("yearNow: ",yearNow)
         console.log("is18",is18)
-        if (is18 < 18) {
+        if (is18 < 18 ) {
             throw new Error('Usuario precisa ser maior de 18 Anos');
         }
+        if (isNaN(is18) ) {
+            throw new Error('Data de Nascimento inválida');
+        }
+        return;
 
+    }
+
+    formatDate(dateString: string){
+        const [day, month, year] = dateString.split("/");
+        console.log("ENTREI FORMAT DATE");
+            return new Date(`${year}-${month}-${day}`);
     }
 
     validateEmail(email: String) {
@@ -76,6 +97,7 @@ export class User implements IUserbody {
         if (!email.includes('@')) {
             throw new Error('Email não é valido ');
         }
+        return
     }
 
     

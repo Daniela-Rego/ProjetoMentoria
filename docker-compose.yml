@@ -1,6 +1,48 @@
 version: '3.9'
 
 services:
+  db:
+    container_name: db_mapasentimento
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: typeorm_user_compose
+      POSTGRES_PASSWORD: 123457
+      POSTGRES_DB: postgres_compose_db
+    ports:
+     - "5432:5432" 
+    volumes: 
+      - db:/postgresql:/var/lib/postgresql/data 
+    networks:
+      - rabbitmq_go_net  
+  app:
+    depends_on: 
+      - db
+      - rabbitmq
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: node:20.5.0
+    container_name: api_node
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      TYPEORM_HOST: db
+      TYPEORM_PORT: 5432
+      TYPEORM_USERNAME: typeorm_user_compose
+      TYPEORM_PASSWORD: 123457
+      TYPEORM_NAME: postgres_compose_db
+    working_dir: /usr/src/app  
+    ##run: npx tsc
+    command: sh -c "npm run typeorm migration:run -- -d src/typeorm/dataSource.ts && npx tsc && node dist/server.js"
+    tty: true
+    networks:
+      - rabbitmq_go_net
+     
+      
   rabbitmq:
     image: rabbitmq:3.13-management-alpine
     container_name: 'rabbitmq'
@@ -17,3 +59,6 @@ services:
 networks:
   rabbitmq_go_net:
     driver: bridge
+volumes:
+  app:
+  db:     

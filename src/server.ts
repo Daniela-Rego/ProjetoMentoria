@@ -7,21 +7,22 @@ import mqConnection from "./service/rabbitmqServices.js"
 
 AppDataSource.initialize()
   .then(async () => {
-    console.log("iniciou o banco")
-
+    console.log("iniciou o banco") 
+ 
     const app = express();
-    await  mqConnection.connect();
+   await mqConnection.connect();
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-    const port = process.env.PORT || 3001
+    const port = process.env.PORT || 3000
     app.use(express.json());
     app.use(routes)
     app.listen(port);
     console.log(`listening on port ${port}`);
    
 
+  }).catch((error: any) => console.log('deu erro', error));
 
 
-}).catch((error: any) => console.log('deu erro', error));
+
 
 
   

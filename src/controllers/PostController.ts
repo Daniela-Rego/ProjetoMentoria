@@ -3,15 +3,22 @@ import { PostService } from "../service/PostService"
 import { PostRepository } from "../repository/postRepository";
 import { WeekeendService } from "../service/weekeendService";
 export  class PostController {
-    // qual o melhor colocar o response aqui ou no router?
-    //se colocar no router o request aqui poss colocar uma interface como tipo ?
+    
+    private postRepository:PostRepository;
+    private weekeendService : WeekeendService;
+    private postService : PostService;
+    
+    constructor(){
+        this.postRepository = new PostRepository();
+        this.weekeendService = new WeekeendService(this.postRepository);
+        this.postService = new PostService(this.postRepository,this.weekeendService)
+    }
+
+
    async createPost(request:Request, response:Response,){
         try{
-            const postRepository = new PostRepository()
-            const weekeendService = new WeekeendService(postRepository);
-            const postService = new PostService(postRepository,weekeendService)
             console.log("request.body===>",request.body);
-           await postService.createPosts(request.body);
+           await this.postService.createPosts(request.body);
             console.log("VOLTEI CONTROLLER")
             response.status(201).json("Post is created")
         }
@@ -23,6 +30,12 @@ export  class PostController {
         
         
     }
+
+   async updateStatus (){
+     console.log("entrei no updateStatus no controller");
+     this.postService.updateStatus();
+     
+   }
 
     
     

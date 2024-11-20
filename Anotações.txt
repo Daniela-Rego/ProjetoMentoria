@@ -26,7 +26,7 @@ https://typeorm.io/  procurar por Installation
 
 para gerar uma migration pro typeOrm precisamos 
 ter o script no packger.json "typeorm": "ts-node ./node_modules/typeorm/cli.js"
-e rodar o coamndo no terminal: npm run  typeorm migration:create -nome CreateUser
+e rodar o coamndo no terminal: npm run  typeorm migration:create -name CreateUser
 npm run  typeorm migration:run   -- -d src/typeorm/dataSource.ts  
 npm run  typeorm migration:revert   -- -d src/database/dataSource.ts  
 
@@ -73,3 +73,56 @@ const getPaginatedData = async (page, limit) => {
   const result = await pool.query(query, [limit, offset]);
   return result.rows;
   
+
+
+  tinhamos dois erros, as classe nao estavam instanciadas 
+  e não pode ser  expect(result).tobeEqual(true) 
+  pq quando o return é vazio ele fica como undefine no teste, 
+  por isso coloquei para retornar o save post. 
+
+
+Incluir Docker no projeto:
+ 1- Criar DockerFile(não obrigatório)
+ 2-  rodar o docker: docker-compose up --build
+ 
+
+
+ docker-compose down --volumes
+docker-compose volumes --down
+
+command: sh -c "npm run typeorm migration:run -- -d src/typeorm/dataSource.ts && npm run start"
+
+Matriz Quadrada: Número de linhas = Número de colunas (por exemplo, 3x3, 4x4).
+Matriz Retangular: O número de linhas é diferente do número de colunas (por exemplo, 4x3 ou 3x4)
+
+
+
+ primaryDiagonalSum += matrix[i][i];
+secondaryDiagonalSum += matrix[i][n - 1 - i];
+
+ console.log(" ".repeat(n - i) + "#".repeat(i));
+}
+
+
+PONTOS PARA MELHORAR:
+ - implementar swagger em todo o projeto
+ - implementar a cron
+ - tratamento de erros
+ - criar tabela de sentimento e incluir como chave extrangeira na tabela do sentimento
+ - criar rota para listar todos os post
+ - colocar user como premium ou free
+ - um usuario pode ver os posts de outros desde que esse post seja publico, pq podemos ter post privados
+ - usuario pode incluir imagem no post
+
+ Duvidas: 
+ utilizar somente o controler ja estou fazendo injeção de dependecia ?
+ somente utilizr interface para contratos posso dizer que estou implementando o (I) do SOLID ?
+ como criei uma classe para cada entidade do meu projeto estou implementando o (S) Do SOLID ?
+
+
+
+ POSTGRES_USER: ${TYPEORM_USERNAME}
+      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
+      POSTGRES_DB: ${TYPEORM_DATABASE}
+    ports:
+      - "${TYPEORM_PORT}:${TYPEORM_PORT}"

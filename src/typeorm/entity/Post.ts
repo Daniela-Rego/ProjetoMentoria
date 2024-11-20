@@ -31,6 +31,7 @@ export class Post {
         this.id = uuidv4();  
         console.log("dentro do POST typeOrm", this.id)  
         this.title = title;
+        console.log("dentro do POST typeOrm  this.title",  this.title)  
         this.description = description;
         this.id_user = id_user;
         this.id_feeling =  id_feeling
@@ -39,3 +40,6 @@ export class Post {
     }
 
 }
+
+
+

@@ -2,6 +2,7 @@ import { Connection, Channel, ConsumeMessage, connect, Message } from "amqplib";
 import PostEntity from "../entities/PostEntity";
 import IPostbody from "../interfaces/PostBodyInterface";
 import { METHODS } from "http";
+const RETRY_DELAY = 10000; // 10 segundos
 
 class RabbitmqServices {
     private connection!: Connection;
@@ -11,12 +12,13 @@ class RabbitmqServices {
     async connect() {
         try {
             console.log("entrei em RabbitmqServices connect")
-            this.connection = await connect('amqp://fila_user:123456@localhost:5672');
+            this.connection = await connect('amqp://fila_user:123456@rabbitmq:5672')
             this.channel = await this.connection.createChannel();
             this.exchange = await this.channel.assertExchange("amq.direct", "direct");
             console.log("criou um this.exchange: ", this.exchange)
         } catch (e) {
             console.log("Deu erro no RabbitmqServices connect: ", e)
+            setTimeout(() => this.connect(), RETRY_DELAY);
         }
 
     }

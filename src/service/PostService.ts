@@ -1,14 +1,18 @@
-import { title } from "process";
 import IPostbody from "../interfaces/PostBodyInterface";
-import PostEntity from "../entities/PostEntity"
+import PostEntity from "../entities/PostEntity";
 import { PostRepository } from "../repository/postRepository";
-import { WeekeendService } from "./weekeendService"
-import mqConnection from "./rabbitmqServices"
-import { AnyARecord } from "dns";
+import { WeekeendService } from "./weekeendService";
+import mqConnection from "./rabbitmqServices";
+
+
+
 
 export class PostService {
 
-    constructor(private repositoryPost: PostRepository, private weekeendService: WeekeendService) { }
+    constructor(private repositoryPost: PostRepository, private weekeendService: WeekeendService) { 
+        this.repositoryPost = repositoryPost;
+        this.weekeendService = weekeendService;
+    }
 
     async createPosts(body: IPostbody): Promise<PostEntity | undefined | Error> {
         try {
@@ -22,7 +26,7 @@ export class PostService {
 
                 const savePost = await this.repositoryPost.save(post);
 
-                return;
+                return savePost;
             }
             return;
 
@@ -61,7 +65,7 @@ export class PostService {
 
         var dateVerify: Date = body.created_at ? body.created_at : new Date();
 
-        const IsWeekeends = await this.IsWeekeend(dateVerify)
+        const IsWeekeends: Boolean = await this.IsWeekeend(dateVerify)
         if (IsWeekeends) {
             console.log('If IsWeekeenddddd');
            
@@ -87,8 +91,14 @@ export class PostService {
             return true;
         }
         console.log('Dia de semana');
-        return false;
+        return true;
     }
+
+   async updateStatus(){
+    console.log("updateStatus service")
+        await this.repositoryPost.updateSatusPost();
+   }     
+    
 
 
 

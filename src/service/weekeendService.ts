@@ -3,7 +3,7 @@ import mqConnection from "./rabbitmqServices"
 import PostEntity from "../entities/PostEntity"
 import { PostRepository } from "../repository/postRepository";
 import IPostbody from "../interfaces/PostBodyInterface";
-import cron from "node-cron";
+
 
 export class WeekeendService {
     constructor(private repositoryPost: PostRepository) { }
