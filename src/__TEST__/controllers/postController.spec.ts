@@ -1,5 +1,8 @@
 import {PostController}   from "../../controllers/PostController"
 import { Response,Request } from "express";
+import { PostRepository } from "../../repository/postRepository";
+import { WeekeendService } from "../../service/weekeendService";
+import { PostService } from "../../service/PostService";
 describe("Should be test class PostController",() => {
     beforeEach( () =>{
 
@@ -26,7 +29,10 @@ describe("Should be test class PostController",() => {
                 responseObject = result;
                   }),
                 }
-            const postController = new PostController();
+                const postRepository = new PostRepository()
+                const weekeendService = new WeekeendService(postRepository);
+                const postService = new PostService(postRepository,weekeendService)
+            const postController = new PostController(postService,postRepository,weekeendService);
                 postController.createPost(requestPostMock,mockResponse as Response );
 
                expect(mockResponse.status).toHaveBeenCalledWith(201);
@@ -52,8 +58,11 @@ describe("Should be test class PostController",() => {
                     responseObject = result;
                       }),
             }
-
-           const  postController = new PostController()
+            const postRepository = new PostRepository()
+                const weekeendService = new WeekeendService(postRepository);
+                const postService = new PostService(postRepository,weekeendService)
+            const postController = new PostController(postService,postRepository,weekeendService);
+           
            postController.createPost(requestPostMock,mockResponse as Response)
            expect(mockResponse.status).toHaveBeenCalledWith(500);
         });
