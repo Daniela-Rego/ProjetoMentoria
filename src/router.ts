@@ -149,12 +149,10 @@ routes.get('/Posts', (req: any, res: any) => {
    console.log("req", req.body)
 });
 
-//cron.schedule('*/30 * * * * *', async () => {
-//   console.log("entrei na cron");
-//   postController.updateStatus();
-//   
-//
-//});
+cron.schedule('*/30 * * * * *', async () => {
+   console.log("entrei na cron");
+   postController.updateStatus();
+});
 
 
 
