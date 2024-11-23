@@ -4,11 +4,18 @@ import { UserController } from './controllers/UserController';
 import { LoginController } from './controllers/LoginController';
 import { autentication } from './middleware/tokenMiddleware';
 import cron from "node-cron";
+import { PostRepository } from './repository/postRepository';
+import { WeekeendService } from './service/weekeendService';
+import { PostService } from './service/PostService';
 
 const routes = Router()
 
 console.log("entrei rotas ");
-const postController = new PostController();
+const postRepository = new PostRepository()
+   const weekeendService = new WeekeendService(postRepository);
+   const postService = new PostService(postRepository,weekeendService)
+const postController = new PostController(postService,postRepository,weekeendService)
+
 /**
  * @swagger
  * /createUser:
@@ -50,7 +57,7 @@ const postController = new PostController();
  */
 routes.post('/createUser', (req:any , res: any) => {
    console.log("req router", req.body)
-   var userController = new UserController()
+   let userController = new UserController()
    userController.createUser(req, res)
 
 
@@ -132,20 +139,23 @@ routes.post('/login', new LoginController().login)
 
 
 
-routes.post('/createPost', autentication, postController.createPost)
+routes.post('/createPost', autentication, (req:any, res: any) => {
+   postController.createPost(req, res)
+});
 
 
 //Deve aparecer todos os post com seus status.
-routes.get('/Posts', (req, res) => {
+routes.get('/Posts', (req: any, res: any) => {
    console.log("req", req.body)
 });
 
-cron.schedule('*/30 * * * * *', async () => {
-   console.log("entrei na cron");
-   postController.updateStatus();
-   
+//cron.schedule('*/30 * * * * *', async () => {
+//   console.log("entrei na cron");
+//   postController.updateStatus();
+//   
+//
+//});
 
-});
 
 
 

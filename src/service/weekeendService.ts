@@ -8,7 +8,7 @@ import IPostbody from "../interfaces/PostBodyInterface";
 export class WeekeendService {
     constructor(private repositoryPost: PostRepository) { }
 
-    async execute() {
+    async execute():Promise<void> {
         console.log("entrei class WeekeendService")
         
 

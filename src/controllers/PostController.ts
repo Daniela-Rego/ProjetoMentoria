@@ -4,20 +4,15 @@ import { PostRepository } from "../repository/postRepository";
 import { WeekeendService } from "../service/weekeendService";
 export  class PostController {
     
-    private postRepository:PostRepository;
-    private weekeendService : WeekeendService;
-    private postService : PostService;
-    
-    constructor(){
-        this.postRepository = new PostRepository();
-        this.weekeendService = new WeekeendService(this.postRepository);
-        this.postService = new PostService(this.postRepository,this.weekeendService)
-    }
-
-
-   async createPost(request:Request, response:Response,){
+    constructor( private postService: PostService,private postRepository: PostRepository, private weekeendService: WeekeendService){}
+    //Como passamos o postController.createPost diretamente como referência ao middleware de rota, isso faz com que o contexto do this dentro do método createPost seja perdido.
+    //Transformei o método createPost em uma função de seta. 
+    //As funções de seta herdam o contexto do this da classe onde são definidas.
+    //createPost = async (request:Request, response:Response,) =>{
+    async createPost(request:any, response:any){
         try{
-            console.log("request.body===>",request.body);
+            
+            console.log("entrei controller v1: request.body===>",request.body);
            await this.postService.createPosts(request.body);
             console.log("VOLTEI CONTROLLER")
             response.status(201).json("Post is created")

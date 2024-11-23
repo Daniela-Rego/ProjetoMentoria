@@ -1,19 +1,18 @@
 import IPostbody from "../interfaces/PostBodyInterface";
 import PostEntity from "../entities/PostEntity";
-import { PostRepository } from "../repository/postRepository";
 import { WeekeendService } from "./weekeendService";
 import mqConnection from "./rabbitmqServices";
+import { IWeekeend } from "../interfaces/IWeekeend";
+import { PostRepository } from "../repository/postRepository";
 
 
 
 
 export class PostService {
+    
 
-    constructor(private repositoryPost: PostRepository, private weekeendService: WeekeendService) { 
-        this.repositoryPost = repositoryPost;
-        this.weekeendService = weekeendService;
-    }
-
+    constructor(private repositoryPost: PostRepository, private weekeendService: WeekeendService) { }
+   
     async createPosts(body: IPostbody): Promise<PostEntity | undefined | Error> {
         try {
             console.log("antes da validacao")
